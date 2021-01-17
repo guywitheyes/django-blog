@@ -5,13 +5,49 @@
 <hr>
 
 <div class="content-section">
-    {% for post in posts %}
-        <h2><a href="{% url 'post' post.id %}">{{ post.title }}</a></h2>
-        <span class="text-muted">
-            <a href="{% url 'author' post.author %}" class="author">{{ post.author }}</a>
-            <span class="date-posted">{{ post.date_posted }}</span>
-        </span>
-        <p class="content">{{ post.content }}</p>
+    {% for post in page_obj %}
+        <div class="card card-body">
+        
+            <h2 class="card-title"><a href="{% url 'post' post.id %}">{{ post.title }}</a></h2>
+
+            <span class="card-subtitle mb-2 text-muted">
+                <a href="{% url 'author' post.author %}" class="author">{{ post.author }}</a>
+                <span class="date-posted">{{ post.date_posted }}</span>
+            </span>
+
+            <p class="content card-text">{{ post.content }}</p>
+
+        </div>
+        <br>
     {% endfor %}
+</div>
+
+<div class="pagination mb-5">
+    <span class="step-links">
+        <div class="btn-group">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">
+                    <button class="btn btn-primary mr-1">First</button>
+                </a>
+                <a href="?page={{ page_obj.previous_page_number }}">
+                    <button class="btn btn-primary mr-1">Previous</button>
+                </a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">
+                    <button class="btn btn-primary mr-1">Next</button>
+                </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">
+                    <button class="btn btn-primary mr-1">Last</button>
+                </a>
+            {% endif %}
+            
+        </div>
+    </span>
 </div>
 {% endblock content %}

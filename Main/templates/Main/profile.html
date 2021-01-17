@@ -2,6 +2,26 @@
 
 {% block content %}
 <h1>{{ user.username }}</h1>
+<h4 class="subtitle mb-2 text-muted">My Posts:</h2>
+
+{% for post in posts %}
+    <div class="card card-body">
+    
+        <h2 class="card-title"><a href="{% url 'post' post.id %}">{{ post.title }}</a></h2>
+
+        <span class="card-subtitle mb-2 text-muted">
+            <a href="{% url 'author' post.author %}" class="author">{{ post.author }}</a>
+            <span class="date-posted">{{ post.date_posted }}</span>
+        </span>
+
+        <p class="content card-text">{{ post.content }}</p>
+
+    </div>
+    <br>
+{% endfor %}
+
+
+
 
 <div class="content-section">
     

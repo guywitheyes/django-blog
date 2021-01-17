@@ -22,3 +22,6 @@ class NewPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content']
+
+class ConfirmEmailForm(forms.Form):
+    code_field = forms.CharField(max_length=6)

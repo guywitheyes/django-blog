@@ -1,0 +1,16 @@
+{% extends 'Main/base.html' %}
+
+{% block content %}
+<h1>Confirm</h1>
+<hr>
+<form action="" method="post">
+    <fieldset class="form-group">
+        {%csrf_token%}
+        <input type="text">
+    </fieldset>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-success">Confirm</button>
+    </div>
+</form>
+{% endblock content %}

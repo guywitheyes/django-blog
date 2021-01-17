@@ -8,8 +8,12 @@
         <span class="date-posted">{{ post.date_posted }}</span>
     </span>
     <p class="content">{{ post.content }}</p>
-
-    <a href="{% url 'update' post.id %}"><button class="btn btn-info">Update</button></a>
-    <a href="{% url 'delete' post.id %}"><button class="btn btn-danger">Delete</button></a>
+    
+    <!-- post_author is a Boolean that returns True or False depending on following condition: -->
+    <!-- Is current user the author of the post? If so, he can Update or Delete the post.-->
+    {% if post_author %} 
+        <a href="{% url 'update' post.id %}"><button class="btn btn-outline-info">Update</button></a>
+        <a href="{% url 'delete' post.id %}"><button class="btn btn-danger">Delete</button></a>
+    {% endif %}
 </div>
 {% endblock content %}

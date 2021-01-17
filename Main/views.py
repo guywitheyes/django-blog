@@ -2,15 +2,24 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
-from .forms import NewPostForm, UserRegisterForm, PostUpdateForm
+from .forms import NewPostForm, UserRegisterForm, PostUpdateForm, ConfirmEmailForm
 from .models import Post
+from .utils import confirm_email_address, send_confirm_email
 
 # Create your views here.
 def home(request):
+    posts = Post.objects.all()
+    paginator = Paginator(posts, 10)
+    
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'title': 'Home',
-        'posts': Post.objects.all()
+        'posts': posts,
+        'page_obj': page_obj,
     }
     return render(request, 'Main/home.html', context=context)
 
@@ -32,9 +41,15 @@ def author(request, author):
 
 def post_page(request, post_id):
     post = Post.objects.filter(pk=post_id).first()
+    if post.author == request.user:
+        post_author = True
+    else:
+        post_author = False
+
     context = {
         'title': 'Post',
-        'post': post
+        'post': post,
+        'post_author': post_author,
     }
     messages.success(request, post.id)
     return render(request, 'Main/post.html', context)
@@ -68,7 +83,7 @@ def update(request, post_id):
     author = post.author
 
     if request.method == 'POST':
-        form = PostUpdateForm(request.POST)
+        form = PostUpdateForm(request.POST, initial={'title': post.title, 'content': post.content})
         if form.is_valid():
             form.save(commit=False)
 
@@ -80,7 +95,7 @@ def update(request, post_id):
             return redirect('home')
 
     else:
-        form = PostUpdateForm()
+        form = PostUpdateForm(initial={'title': post.title, 'content': post.content})
 
     context = {
         'title': 'Update Post',
@@ -103,11 +118,12 @@ def register(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
+            messages.info(request, message=f'Please confirm your account.')
 
-            messages.success(request, message=f'Account created for {username}')
-
-            return redirect('profile')
+            username = form.cleaned_data['username']
+            email = form.cleaned_data.get('email')
+            send_confirm_email(username, email)
+            return redirect('confirm')
     else:
         form = UserRegisterForm()
 
@@ -117,10 +133,28 @@ def register(request):
     }
     return render(request, 'Main/register.html', context=context)
 
+def confirm(request):
+    if request.method == 'POST':
+        form = ConfirmEmailForm(request.POST)
+        if form.is_valid():
+            code_field = form.cleaned_data['code_field']
+            confirm_email_address(code_field)
+            
+    else:
+        form = ConfirmEmailForm()
+    context = {
+        'title': 'Register',
+        'form': form,
+    }
+    return render(request, 'main/confirm.html', context)
+
 @login_required
 def profile(request):
+    user = User.objects.filter(username=request.user).first()
+    posts = Post.objects.filter(author=user)
     context = {
-        'title': 'Profile'
+        'title': 'Profile',
+        'posts': posts,
     }
     return render(request, 'Main/profile.html', context=context)
     
