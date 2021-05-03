@@ -15,8 +15,10 @@ Users can register and login:
 
 When you're logged in, you can see your "Profile" page. This will show a list of all the posts you have created. These also have pagination, meaning you can only see about 
 10 posts per page.
-![Profile](!https://i.imgur.com/0nlhchb.png)
+![Profile](https://i.imgur.com/0nlhchb.png)
 
-When logged in, you can create new posts under your name: ![New Post](https://i.imgur.com/oqsXpfH.png)
+When logged in, you can create new posts under your name: 
+![New Post](https://i.imgur.com/oqsXpfH.png)
 
-You can also Update or Delete your existing posts: ![Update and Delete](https://i.imgur.com/pLmvEQs.png)
+You can also Update or Delete your existing posts: 
+![Update and Delete](https://i.imgur.com/pLmvEQs.png)
