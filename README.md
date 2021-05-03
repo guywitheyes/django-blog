@@ -23,3 +23,9 @@ When logged in, you can create new posts under your name:
 You can also Update or Delete your existing posts: 
 
 ![Update and Delete](https://i.imgur.com/pLmvEQs.png)
+
+# Installation instructions
+1. Download the code for this project and extract it.
+2. Make sure you have Python and Django installed.
+3. Open up your terminal and CD into the project directory.
+4. Run "manage.py runserver" to start a local server of the web app.
