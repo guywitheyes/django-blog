@@ -21,4 +21,5 @@ When logged in, you can create new posts under your name:
 ![New Post](https://i.imgur.com/oqsXpfH.png)
 
 You can also Update or Delete your existing posts: 
+
 ![Update and Delete](https://i.imgur.com/pLmvEQs.png)
